@@ -149,8 +149,6 @@ This step can also be done by downloading the compose.yml file with:
 ```bash
 docker compose up -d
 ```
-```
-```
 
 ---
 
