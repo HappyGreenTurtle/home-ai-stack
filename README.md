@@ -1,6 +1,5 @@
 Step-by-Step Guide: Local AI Stack (Ollama + OpenWebUI + Tailscale)
 \
-\
 1. Install Ollama
 
 Go to:
@@ -124,12 +123,12 @@ http://host.docker.internal:11434
 \
 Architecture
 
-Internet
-    │
-Tailscale
-    │
-OpenWebUI (Docker, port 3000)
-    │
-Ollama (port 11434)
-    │
+Internet\
+    │\
+Tailscale\
+    │\
+OpenWebUI (Docker, port 3000)\
+    │\
+Ollama (port 11434)\
+    │\
 Local Models
