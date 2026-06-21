@@ -1,134 +1,236 @@
-Step-by-Step Guide: Local AI Stack (Ollama + OpenWebUI + Tailscale)
-\
-1. Install Ollama
+# Local AI Stack (Ollama + OpenWebUI + Tailscale)
 
-Go to:
+This guide helps you set up a secure, private, and remotely accessible AI environment using **Ollama** for local LLMs, **OpenWebUI** as a web frontend, and **Tailscale** for secure remote access.
+
+---
+
+## 🏗️ Architecture Overview
+
+```text
+       [ Internet ]
+            │
+      ( Tailscale )
+            │
+   [ OpenWebUI (Docker) ]
+         Port 3000
+            │
+     [ Ollama API ]
+        Port 11434
+            │
+ [ Local Models (Llama 3, Gemma, etc.) ]
+```
+
+---
+
+## 1. Install Ollama
+
+Visit the official website:
 
 https://ollama.com
 
-and install it.
+Or install directly on macOS and Linux:
 
-For macOS and Linux:
-
+```bash
 curl -fsSL https://ollama.com/install.sh | sh
-\
-\
-2. Pull a model
+```
 
-Choose a model based on your hardware:
+---
 
-Ollama Models
+## 2. Pull a Model
 
-Then run:
+Choose a model that fits your available RAM and VRAM:
 
-ollama pull <model>
+https://ollama.com/search
+
+Download a model:
+
+```bash
+ollama pull <model_name>
+```
 
 Example:
 
+```bash
 ollama pull llama3
-\
-\
-3. Run your model
+```
 
-Start a model with:
+---
 
-ollama run <model>
+## 3. Run Your Model
+
+Launch a model directly in the terminal:
+
+```bash
+ollama run <model_name>
+```
 
 Example:
 
+```bash
 ollama run llama3
+```
 
-This opens a local chat interface in your terminal.
-\
-\
-4. Install Tailscale (remote access)
+To exit the chat interface:
 
-Download and install:
+```text
+/exit
+```
+
+---
+
+## 4. Install Tailscale
+
+Tailscale allows secure remote access without opening ports on your router.
+
+Download Tailscale:
 
 https://tailscale.com/download
 
-Linux install:
+### Linux Installation
 
+```bash
 curl -fsSL https://tailscale.com/install.sh | sh
+```
 
-Arch Linux:
+### Arch Linux Installation
 
-sudo pacman -S tailscaled
+```bash
+sudo pacman -S tailscale
 sudo systemctl enable --now tailscaled
+```
 
-Then log in:
+Authenticate the machine:
 
-tailscale up
+```bash
+sudo tailscale up
+```
 
-Install Tailscale on all devices you want to access this system from.
-\
-\
-5. Install Docker
+> Install Tailscale on every device you want to access your AI stack from.
+
+---
+
+## 5. Install Docker
+
+Docker is used to run OpenWebUI.
+
+Installation instructions:
 
 https://www.docker.com/get-started/
 
-Arch Linux:
+### Arch Linux
 
+```bash
 sudo pacman -S docker
 sudo systemctl enable --now docker
-\
-\
-6. Install OpenWebUI with Docker
+```
 
-Pull image:
+---
 
+## 6. Install OpenWebUI
+
+Pull the image:
+
+```bash
 docker pull ghcr.io/open-webui/open-webui:main
+```
 
-Run container:
+Run the container:
 
-docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
-\
-\
-7. Test OpenWebUI
+```bash
+docker run -d \
+  -p 3000:8080 \
+  -v open-webui:/app/backend/data \
+  --name open-webui \
+  ghcr.io/open-webui/open-webui:main
+```
+
+---
+
+## 7. Test OpenWebUI
 
 Open:
 
+```text
 http://localhost:3000
+```
 
-Create your admin account on first launch.
+Create an administrator account when prompted.
 
-This account is stored locally and is separate from Tailscale.
-\
-\
-8. Expose via Tailscale
+This account is stored locally and is independent of your Tailscale account.
 
-Run:
+---
 
+## 8. Expose OpenWebUI via Tailscale
+
+Expose the web interface securely through your tailnet:
+
+```bash
 tailscale serve --bg 3000
+```
 
-You will get a URL like:
+Tailscale will generate a URL similar to:
 
-https://your-machine.tailnet.ts.net
+```text
+https://your-machine-name.tailnet-id.ts.net
+```
 
-You can access OpenWebUI from any device in your tailnet.
-\
-\
-9. Connect OpenWebUI to Ollama
+You can now access OpenWebUI from any authorized device connected to your tailnet.
 
-In OpenWebUI:
+---
 
-Settings → Admin Settings → Connections → Ollama API
+## 9. Connect OpenWebUI to Ollama
 
-Use:
+If your models do not appear automatically:
 
+1. Open **Settings**
+2. Navigate to **Admin Settings → Connections → Ollama API**
+3. Enter:
+
+```text
 http://127.0.0.1:11434
-If Docker networking issues occur:
-http://host.docker.internal:11434
-\
-\
-Architecture
+```
 
-Internet\
-    │\
-Tailscale\
-    │\
-OpenWebUI (Docker, port 3000)\
-    │\
-Ollama (port 11434)\
-    │\
-Local Models
+If Docker networking prevents OpenWebUI from reaching Ollama, try:
+
+```text
+http://host.docker.internal:11434
+```
+
+---
+
+## Troubleshooting
+
+### Check that Ollama is running
+
+```bash
+curl http://127.0.0.1:11434/api/tags
+```
+
+If successful, Ollama will return a JSON response containing your installed models.
+
+### Check OpenWebUI container status
+
+```bash
+docker ps
+```
+
+### Check Tailscale status
+
+```bash
+tailscale status
+```
+
+---
+
+## Result
+
+You now have:
+
+* Local LLMs running through Ollama
+* A web interface provided by OpenWebUI
+* Secure remote access through Tailscale
+* No port forwarding required
+* Full ownership of your data and models
+
+```
+```
