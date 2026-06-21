@@ -144,6 +144,14 @@ docker run -d \
   ghcr.io/open-webui/open-webui:main
 ```
 
+This step can also be done by downloading the compose.yml file with:
+
+```bash
+docker compose up -d
+```
+```
+```
+
 ---
 
 ## 7. Test OpenWebUI
