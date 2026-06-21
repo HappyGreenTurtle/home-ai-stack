@@ -4,7 +4,7 @@ This guide helps you set up a secure, private, and remotely accessible AI enviro
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ```text
        [ Internet ]
