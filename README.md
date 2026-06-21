@@ -238,5 +238,3 @@ You now have:
 * No port forwarding required
 * Full ownership of your data and models
 
-```
-```
