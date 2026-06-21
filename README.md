@@ -17,8 +17,8 @@ This guide helps you set up a secure, private, and remotely accessible AI enviro
      [ Ollama API ]
         Port 11434
             │
- [ Local Models ]
-(Llama 3, Gemma, etc.)
+    [ Local Models ]
+ (Llama 3, Gemma, etc.)
 ```
 
 ---
